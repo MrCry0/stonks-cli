@@ -5,9 +5,9 @@ This document describes the steps for cutting a new stonks-cli release.
 ## Prerequisites
 
 - Write access to the repository
-- Poetry installed and configured
+- **Poetry** or **uv** installed and configured
 - A PyPI account (and optionally a TestPyPI account)
-- PyPI API tokens stored in your local Poetry config (see [Configure tokens](#5-configure-tokens))
+- PyPI API tokens stored in your local Poetry config (see [Configure tokens](#5-configure-tokens)) or as environment variables for uv
 
 ---
 
@@ -89,6 +89,8 @@ Build both a source distribution and a wheel:
 
 ```bash
 poetry build
+# or
+uv build
 ```
 
 Artifacts are written to `dist/`:
@@ -138,6 +140,8 @@ Publish:
 
 ```bash
 poetry publish --repository testpypi
+# or
+uv publish --index https://test.pypi.org/legacy/
 ```
 
 Verify the upload at `https://test.pypi.org/project/stonks-cli/` and optionally
@@ -158,6 +162,8 @@ Once you are satisfied with the TestPyPI release:
 
 ```bash
 poetry publish
+# or
+uv publish
 ```
 
 Verify the release at `https://pypi.org/project/stonks-cli/`.

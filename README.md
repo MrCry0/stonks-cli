@@ -38,6 +38,12 @@ Or with [pipx](https://pipx.pypa.io/) (recommended -- keeps the tool isolated):
 pipx install stonks-cli
 ```
 
+Or with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv tool install stonks-cli
+```
+
 ## Preparing configuration in YAML format
 
 stonks-cli stores your portfolio in a YAML file.  By default the file is read
