@@ -26,5 +26,6 @@ Thumbs.db
 .coverage
 coverage.xml
 
-# Poetry lock file
+# Lock files
 poetry.lock
+uv.lock
