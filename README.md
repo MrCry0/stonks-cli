@@ -324,6 +324,13 @@ the host.
 
 Looks bullish.
 
+## Documentation
+
+- [OVERVIEW.md](OVERVIEW.md) -- Project vision, core loop, target platform
+- [ARCHITECTURE.md](ARCHITECTURE.md) -- System architecture and coding standards
+- [SPECS.md](SPECS.md) -- Technical specs (data models, API signatures)
+- [CONTEXT_WINDOW.md](CONTEXT_WINDOW.md) -- Decision log and revision history
+
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for
