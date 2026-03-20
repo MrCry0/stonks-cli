@@ -3,6 +3,6 @@ repos:
     hooks:
       - id: ci-check
         name: Run CI check script
-        entry: poetry run bash ./scripts/ci-check
+        entry: uv run bash ./scripts/ci-check
         language: system
         pass_filenames: false

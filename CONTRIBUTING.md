@@ -14,7 +14,7 @@ and submit changes.
 ### Prerequisites
 
 - Python **3.11+**
-- Poetry **2.0+**
+- **uv**
 - Git
 
 ### Clone the repository
@@ -27,13 +27,13 @@ cd stonks-cli
 ### Install dependencies
 
 ```bash
-poetry install
+uv sync --extra dev
 ```
 
 ### Install pre-commit hooks (recommended)
 
 ```bash
-poetry run pre-commit install
+uv run pre-commit install
 ```
 
 ---
@@ -45,23 +45,23 @@ stonks-cli uses `ruff` (format + lint), `mypy`, and `pytest`.
 ### Run all checks at once
 
 ```bash
-poetry run bash ./scripts/ci-check
+uv run bash ./scripts/ci-check
 ```
 
 ### Run individual tools
 
 ```bash
-poetry run ruff format --check .
-poetry run ruff check .
-poetry run mypy
-poetry run pytest
+uv run ruff format --check .
+uv run ruff check .
+uv run mypy
+uv run pytest
 ```
 
 ### Auto-format
 
 ```bash
-poetry run ruff format .
-poetry run ruff check . --fix
+uv run ruff format .
+uv run ruff check . --fix
 ```
 
 ---
@@ -101,7 +101,7 @@ We follow a **clean history** approach with **fast-forward merges**.
 5. Run all checks:
 
    ```bash
-   poetry run bash ./scripts/ci-check
+   uv run bash ./scripts/ci-check
    ```
 
 6. Commit and push to your fork:

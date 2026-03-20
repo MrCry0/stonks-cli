@@ -5,9 +5,9 @@ This document describes the steps for cutting a new stonks-cli release.
 ## Prerequisites
 
 - Write access to the repository
-- Poetry installed and configured
+- **uv** installed and configured
 - A PyPI account (and optionally a TestPyPI account)
-- PyPI API tokens stored in your local Poetry config (see [Configure tokens](#5-configure-tokens))
+- PyPI API tokens stored as environment variables
 
 ---
 
@@ -88,7 +88,39 @@ git push origin vX.Y.Z
 Build both a source distribution and a wheel:
 
 ```bash
-poetry build
+uv build
+```
+
+Artifacts are written to `dist/`:
+
+```
+dist/
+  stonks_cli-X.Y.Z.tar.gz
+  stonks_cli-X.Y.Z-py3-none-any.whl
+```
+
+---
+
+## 5. Configure Tokens
+
+Export your PyPI tokens as environment variables before publishing:
+
+```bash
+export UV_PUBLISH_TOKEN_TESTPYPI=<your-testpypi-token>
+export UV_PUBLISH_TOKEN_PYPI=<your-pypi-token>
+```
+
+---
+
+## 6. Publish to TestPyPI (recommended first)
+
+[TestPyPI](https://test.pypi.org/) is a separate instance intended for testing
+the release process without affecting the production index.
+
+Publish:
+
+```bash
+uv publish --index https://test.pypi.org/legacy/
 ```
 
 Artifacts are written to `dist/`:
@@ -138,6 +170,8 @@ Publish:
 
 ```bash
 poetry publish --repository testpypi
+# or
+uv publish --index https://test.pypi.org/legacy/
 ```
 
 Verify the upload at `https://test.pypi.org/project/stonks-cli/` and optionally
@@ -157,7 +191,7 @@ pip install \
 Once you are satisfied with the TestPyPI release:
 
 ```bash
-poetry publish
+uv publish
 ```
 
 Verify the release at `https://pypi.org/project/stonks-cli/`.
@@ -187,7 +221,7 @@ release notes.
 - [ ] Version bump committed
 - [ ] Annotated tag `vX.Y.Z` created
 - [ ] Tag and commits pushed to remote
-- [ ] Distribution built with `poetry build`
+- [ ] Distribution built with `uv build`
 - [ ] Published to TestPyPI and verified
 - [ ] Published to PyPI (production)
 - [ ] GitHub release created

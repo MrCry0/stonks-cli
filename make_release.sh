@@ -5,8 +5,8 @@
 #   ./make_release.sh
 #
 # Prerequisites:
-#   - Poetry installed and configured (pypi-token.testpypi / pypi-token.pypi)
-#   - TestPyPI repository registered: poetry config repositories.testpypi https://test.pypi.org/legacy/
+#   - uv installed
+#   - PYPI_TOKEN_PYPI and PYPI_TOKEN_TESTPYPI environment variables set
 #   - gh CLI authenticated
 #   - Working tree must be clean
 #   - Current branch must be main
@@ -22,7 +22,6 @@ die()   { echo "ERROR: $*" >&2; exit 1; }
 skip()  { echo "SKIP: $*"; }
 
 confirm() {
-    # confirm <question>  -- exits 0 if user answers y/Y, 1 otherwise
     local prompt="$1"
     local _ans
     read -rp "${prompt} [y/N] " _ans
@@ -32,7 +31,7 @@ confirm() {
 # ---------------------------------------------------------------------------
 # 1. Read version from pyproject.toml
 # ---------------------------------------------------------------------------
-VERSION=$(poetry version --short)
+VERSION=$(uv pip show stonks-cli 2>/dev/null | grep "^Version:" | awk '{print $2}')
 [[ -z "$VERSION" ]] && die "Could not read version from pyproject.toml"
 TAG="v${VERSION}"
 
@@ -77,9 +76,9 @@ ok "Pushed main and ${TAG}"
 # ---------------------------------------------------------------------------
 info "Step 3/6 -- Build distribution"
 [[ -d dist/ ]] && echo "Current dist/ contents:" && ls dist/ || true
-confirm "Clean dist/ and run 'poetry build'?" || { skip "Build skipped -- aborting"; exit 0; }
+confirm "Clean dist/ and run 'uv build'?" || { skip "Build skipped -- aborting"; exit 0; }
 rm -rf dist/
-poetry build
+uv build
 ok "Build complete"
 ls -lh dist/
 
@@ -90,7 +89,7 @@ info "Step 4/6 -- Publish to TestPyPI"
 echo "Artifacts to upload:"
 ls dist/
 confirm "Publish to TestPyPI?" || { skip "TestPyPI publish skipped -- aborting"; exit 0; }
-poetry publish --repository testpypi
+uv publish --index https://test.pypi.org/legacy/
 ok "Published to TestPyPI"
 echo "Verify at: https://test.pypi.org/project/stonks-cli/${VERSION}/"
 
@@ -99,7 +98,7 @@ echo "Verify at: https://test.pypi.org/project/stonks-cli/${VERSION}/"
 # ---------------------------------------------------------------------------
 info "Step 5/6 -- Publish to production PyPI"
 confirm "TestPyPI looks good? Publish to production PyPI?" || { skip "PyPI publish skipped -- aborting"; exit 0; }
-poetry publish
+uv publish
 ok "Published to PyPI"
 echo "Verify at: https://pypi.org/project/stonks-cli/${VERSION}/"
 
